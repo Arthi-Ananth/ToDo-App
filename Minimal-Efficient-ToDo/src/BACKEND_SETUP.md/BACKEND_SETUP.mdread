@@ -1,0 +1,206 @@
+# Backend Setup Guide
+
+## ✅ Your Backend is Ready!
+
+Your application uses **Supabase (PostgreSQL)**, NOT MongoDB. Everything is already configured and working.
+
+---
+
+## 🗄️ Database Information
+
+### Database Type: **Supabase (PostgreSQL)**
+
+Your database is already set up with:
+
+✅ **Tasks Table** - Stores all user tasks
+✅ **Auth System** - Built-in Supabase authentication
+✅ **Row Level Security (RLS)** - Each user can only see their own tasks
+
+### Database URL:
+```
+https://exsdvkmiyymeryjzcsrv.supabase.co
+```
+
+---
+
+## 🔧 Backend Architecture
+
+```
+Frontend (React)
+    ↓
+API Calls (http://localhost:3001)-backend
+    ↓
+Express Server (server/server.js)
+    ↓
+Supabase Client
+    ↓
+Supabase Database (PostgreSQL)
+```
+
+---
+
+## 📋 Database Tables
+
+### Tasks Table Structure:
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid | Primary key (auto-generated) |
+| `user_id` | uuid | Links to authenticated user |
+| `title` | text | Task title (required) |
+| `description` | text | Task description |
+| `category` | text | work, personal, health, learning, other |
+| `priority` | text | low, medium, high |
+| `due_date` | timestamp | When task is due |
+| `completed` | boolean | Task completion status |
+| `completed_at` | timestamp | When task was completed |
+| `created_at` | timestamp | When task was created |
+| `updated_at` | timestamp | Last update time |
+
+---
+
+## 🚀 How to Start Backend
+
+### 1. Install Dependencies (Already Done!)
+
+```bash
+cd server
+npm install
+```
+
+### 2. Check Environment Variables
+
+The `.env` file in `/server` folder contains:
+
+```env
+SUPABASE_URL=https://exsdvkmiyymeryjzcsrv.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+PORT=3001
+```
+
+### 3. Start the Backend Server
+
+```bash
+cd server
+npm start
+```
+
+You should see:
+```
+Server running on http://localhost:3001
+```
+
+---
+
+## 📡 API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/signup` | Register new user |
+| POST | `/api/auth/login` | Login existing user |
+| POST | `/api/auth/logout` | Logout user |
+| GET | `/api/user` | Get current user info |
+
+### Tasks
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Get all tasks for logged-in user |
+| POST | `/api/tasks` | Create new task |
+| PUT | `/api/tasks/:id` | Update task |
+| DELETE | `/api/tasks/:id` | Delete task |
+
+---
+
+## 🔐 Authentication Flow
+
+1. **Signup/Login** → Returns `session` with `access_token`
+2. Frontend stores token in `localStorage`
+3. Every API request includes header: `Authorization: Bearer <token>`
+4. Backend verifies token with Supabase
+5. Backend filters data by `user_id`
+
+---
+
+## 🧪 Testing the Backend
+
+### Test Signup:
+```bash
+curl -X POST http://localhost:3001/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123","fullName":"Test User"}'
+```
+
+### Test Login:
+```bash
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+---
+
+## 💡 Why NOT MongoDB?
+
+Your project uses **Supabase** because:
+
+✅ Built-in authentication system
+✅ Row Level Security (RLS) for data protection
+✅ Real-time subscriptions (if needed later)
+✅ Automatic API generation
+✅ PostgreSQL is more reliable for structured data
+✅ Already configured and working
+
+---
+
+## 🎯 What You DON'T Need
+
+❌ MongoDB Compass - Not used in this project
+❌ MongoDB installation - Not needed
+❌ Additional database setup - Already done!
+
+---
+
+## 📊 Viewing Your Data
+
+### Option 1: Supabase Dashboard
+Visit: https://supabase.com/dashboard
+Login and view your tables, users, and data
+
+### Option 2: Using the App
+Just use your frontend application - all data is automatically saved!
+
+---
+
+## ✅ Quick Start Checklist
+
+- [x] Backend dependencies installed
+- [x] Environment variables configured
+- [x] Supabase database created
+- [x] Tasks table created
+- [x] API endpoints ready
+- [x] Authentication working
+
+### To Run Everything:
+
+**Terminal 1 (Backend):**
+```bash
+cd server
+node server.js
+```
+
+**Terminal 2 (Frontend):**
+```bash
+npm run dev
+```
+
+**Browser:**
+```
+http://localhost:5173
+```
+
+---
+
+Everything is ready! Your backend uses Supabase (PostgreSQL), not MongoDB.
